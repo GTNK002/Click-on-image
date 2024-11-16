@@ -1,0 +1,92 @@
+Using Apache Axis develop a Grid Service 
+
+To use Apache Axis develop a Grid Service
+
+Setup the Development Environment
+• First you need to set up the development environment. Following things are needed if
+you want to create Web Services using Axis2 and Eclipse IDE.
+• Then you have to set the environment variables for Java and Tomcat. There following
+variables should be added.
+• Now you have to add runtime environment to eclipse. There go to Windows –->
+Preferences and Select the Server --> Runtime Environments.
+• Then click on the Web Service –-> Axis2 Preferences and browse the top level
+directory of Apache Axis2 Binary Distribution.
+
+Creating the Web Service Using Bottom-Up Approach
+• First create a new Dynamic Web Project (File --> New –-> Other…) and choose
+Web --> Dynamic Web Project.
+• Set Apache Tomcat as the Target Runtime and click Modify to install Axis2 Web
+Services project facet.
+• Select Axis2 Web Services.
+• Click OK and then Next. There you can choose folders and click Finish when you
+are done.
+
+Create Web Service Class
+Right Click on MyFirstWebService in Project Explorer and select New –-> Class and give suitable
+package name and class name. I have given com.sencide as package name and FirstWebService as
+class name.
+
+  package com.sencide;
+  public class FirstWebService {
+  public int addTwoNumbers(int firstNumber, int secondNumber){
+  return firstNumber + secondNumber; }}
+
+• Then, select File --> New –-> Other and choose Web Service.
+• Select the FirstWebService class as service implementation and to make sure that the
+Configuration is setup correctly click on Server runtime.
+• There set the Web Service runtime as Axis2 (Default one is Axis) and click Ok.
+• Click Next and make sure Generate a default service.xml file is selected.
+• Click Next and Start the Server and after server is started you can Finish if you do
+not want to publish the Web service to a test UDDI repository.
+
+Create .aar (Axis Archive) file and Deploying Service
+• In your eclipse workspace and go to MyFirstWebService folder and there you can
+find our web service inside services folder. Go to that directory using command
+prompt and give following command.It will create the FirstWebService.aar file there.
+• Then copy the axis2.war file you can find inside the Apache Axis2 WAR Distribution
+(You downloaded this at the first step) to the webapps directory of Apache Tomcat.
+Now stop the Apache Tomcat server which is running on Eclipse IDE.
+• Using command prompt start the Apache Tomcat (Go to bin directory and run the file
+startup.bat). Now there will be new directory called axis2 inside the webapps directory.Now
+if you go to the http://localhost:8080/axis2/ you can see the home page of Axis2 Web
+Application.
+• Then click the link Administration and login using username : admin and password : axis2.
+There you can see upload service link on top left and there you can upload the created
+FirstWebService.aar file. This is equal to manually copping the FirstWebService.aar to
+webapps\axis2\WEB-INF\services directory.
+• Now when you list the services by going to http://localhost:8080/axis2/services/listServices you
+should be able to see our newly added service.
+
+Creating a Web service client
+• Select File --> New --> Other… and choose Web Service Client
+• Set he newly created Axis2 Web service
+(http://localhost:8080/axis2/services/FirstWebService?wsdl) as the Service definition.Then
+configure the Server runtime as previously and click finish.
+• This will generate two new classes called FirstWebServiceStub.java and
+  FirstWebServiceCallbackHandler.java. Now we can create test class for client and
+  use our web service. Create new class called TestClient.java and paste following code.
+  
+
+Program:
+  package com.sencide;
+  import java.rmi.RemoteException;
+  import com.sencide.FirstWebServiceStub.AddTwoNumbers;
+  import com.sencide.FirstWebServiceStub.AddTwoNumbersResponse;
+  public class TestClient {
+  public static void main(String[] args) throws RemoteException {
+  FirstWebServiceStub stub = new FirstWebServiceStub();
+  AddTwoNumbers atn = new AddTwoNumbers();
+  atn.setFirstNumber(5);
+  atn.setSecondNumber(7);
+  AddTwoNumbersResponse res = stub.addTwoNumbers(atn);
+  System.out.println(res.get_return()); }
+  }
+
+OUTPUT:
+First number : 5
+Second number : 7
+Add two number value is : 12
+
+Result:
+Thus the implementation of a Grid service using apache axix has been executed
+successfully.
